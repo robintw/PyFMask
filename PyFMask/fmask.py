@@ -1912,7 +1912,8 @@ def run_FMask(mtl, outdir=None, cldprob=22.5, cldpix=3, sdpix=3, snpix=3):
     # Create the output filenames
     log_fname = os.path.join(outdir, 'FMASK_LOGFILE.txt')
     cloud_fname = os.path.join(outdir, 'fmask_cloud')
-    cloud_shadow_fname = os.path.join(outdir, 'fmask_cloud_shadow')
+    cloud_shadow_fname = os.path.join(outdir, 'fmask_shadow')
+    final_mask_fname = os.path.join(outdir, 'fmask_final_mask')
     fmask_fname = os.path.join(outdir, 'fmask')
 
     # Open the MTL file.
@@ -1967,6 +1968,14 @@ def run_FMask(mtl, outdir=None, cldprob=22.5, cldpix=3, sdpix=3, snpix=3):
     c.GetRasterBand(1).WriteArray(cs_final)
     c = None
 
+
+    final_mask = ((cs_final == 2) | (cs_final == 4)).astype('uint8')
+    c = gdal.GetDriverByName('ENVI').Create(final_mask_fname, final_mask.shape[
+        1], final_mask.shape[0], 1, gdal.GDT_Byte)
+    c.SetGeoTransform(geoT)
+    c.SetProjection(prj)
+    c.GetRasterBand(1).WriteArray(final_mask * 255)
+    c = None
     # TODO: Save water/snow masks?
 
 
