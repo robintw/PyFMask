@@ -497,7 +497,7 @@ def nd2toarbt(filename, images=None):
             im_B6 = imread(n_B6).astype(numpy.float32)
 
         # convert Band6 from radiance to BT
-        # fprintf('From Band 6 Radiance to Brightness Temperature\n')
+        # fprintf('From Band 6 Radiance to Brightness Temperature')
         # see G. Chander et al. RSE 113 (2009) 893-903
         K1_L4 = 671.62
         K2_L4 = 1284.30
@@ -584,7 +584,7 @@ def nd2toarbt(filename, images=None):
                                      'Lma': Lmax[6], 'Lmi': Lmin[6], 'Qma': Qcalmax[6], 'Qmi': Qcalmin[6]}, locals())
 
             # radiance to TOA reflectances
-            # fprintf('From Radiances to TOA ref\n')
+            # fprintf('From Radiances to TOA ref')
             #  # Solar Spectral Irradiances from LEDAPS
             #  esun_L7=[1969.000, 1840.000, 1551.000, 1044.000, 225.700, -1.0, 82.07]
             #  esun_L5=[1957.0, 1826.0, 1554.0, 1036.0, 215.0, -1.0, 80.67]
@@ -743,7 +743,7 @@ def nd2toarbt(filename, images=None):
         im_B9 = numexpr.evaluate("10000 * im_B9 / cos(s_zen)")
 
         # convert Band6 from radiance to BT
-        # fprintf('From Band 6 Radiance to Brightness Temperature\n');
+        # fprintf('From Band 6 Radiance to Brightness Temperature');
         K1_B10 = numpy.float32(774.89)
         K2_B10 = numpy.float32(1321.08)
         one = numpy.float32(1)
@@ -896,7 +896,7 @@ def plcloud(filename, cldprob=22.5, num_Lst=None, images=None,
 
     if ptm <= 0.1:  # no thermal test => meanless for snow detection (0~1)
         # fprintf('Clear pixel NOT exist in this scene (del prct =
-        # #.2f)\n',ptm)
+        # #.2f)',ptm)
         Cloud[idplcd] = 1  # all cld
 
         # mask out the non-contiguous pixels
@@ -915,14 +915,14 @@ def plcloud(filename, cldprob=22.5, num_Lst=None, images=None,
         t_templ = -1
         t_temph = -1
     else:
-        # fprintf('Clear pixel EXIST in this scene (del prct = #.2f)\n',ptm)
+        # fprintf('Clear pixel EXIST in this scene (del prct = #.2f)',ptm)
         # (temperature test )
         if lndptm >= 0.1:
             F_temp = Temp[idlnd]  # get land temperature
-            #       fprintf('Land temperature\n')
+            #       fprintf('Land temperature')
         else:
             F_temp = Temp[idclr]  # get del temperature
-            #        fprintf('Clear temperature\n')
+            #        fprintf('Clear temperature')
 
         # Get cloud prob over water
         # temperature test (over water)
@@ -1003,7 +1003,7 @@ def plcloud(filename, cldprob=22.5, num_Lst=None, images=None,
         logger.debug('t_templ: %s', t_templ)
         sys.stdout.flush()
 
-        # fprintf('pcloud probability threshold (land) = .2f#\n',clr_max)
+        # fprintf('pcloud probability threshold (land) = .2f#',clr_max)
         # cloud over land : (idplcd & (final_prob > clr_max) & (WT == 0))
         # thin cloud over water : (idplcd & (wfinal_prob > wclr_max) & (WT == 1))
         # high prob cloud (land) : (final_prob > 99.0) & (WT == 0)
@@ -1093,9 +1093,9 @@ def plcloud(filename, cldprob=22.5, num_Lst=None, images=None,
     if ptm > 0.1:
         cloud_temp = Temp[cloud_mask]
 
-        logger.info("Snow Percent: %f\n" %
+        logger.info("Snow Percent: %f" %
                     ((float(Snow[mask].sum()) / float(mask.sum())) * 100.0))
-        logger.info("Cloud Mean: %f C\n" % (numpy.mean(cloud_temp) / 100.0))
+        logger.info("Cloud Mean: %f C" % (numpy.mean(cloud_temp) / 100.0))
 
         if numpy.sum(cloud_mask) > 0:
             cloud_stddev = numpy.std(
@@ -1104,17 +1104,17 @@ def plcloud(filename, cldprob=22.5, num_Lst=None, images=None,
             pct_lower = numpy.percentile(cloud_temp, 83.5) / 100.0
             pct_upper_max = numpy.percentile(cloud_temp, 98.75) / 100.0
 
-            logger.debug("Standard Deviation: %f C\n" % cloud_stddev)
-            logger.debug("97.5 percentile: %f C\n" % pct_upper)
-            logger.debug("83.5 percentile: %f C\n" % pct_lower)
-            logger.debug("98.75 percentile: %f C\n" % pct_upper_max)
+            logger.debug("Standard Deviation: %f C" % cloud_stddev)
+            logger.debug("97.5 percentile: %f C" % pct_upper)
+            logger.debug("83.5 percentile: %f C" % pct_lower)
+            logger.debug("98.75 percentile: %f C" % pct_upper_max)
 
     cloud_skew = 0.0  # TODO
 
-    logger.info("Final Cloud Layer Percent: %f\n" %
+    logger.info("Final Cloud Layer Percent: %f" %
                 ((float(Cloud[cloud_mask].sum()) / float(mask.sum())) * 100.0))
 
-    logger.info("Completed processing FMASK cloud cover...\n")
+    logger.info("Completed processing FMASK cloud cover...")
 
     # We'll modify the return argument for the Python implementation
     # (geoT,prj) are added to the list
@@ -1241,7 +1241,7 @@ def plcloud_warm(toa_bt, cldprob=22.5, num_Lst=None,
 
     if ptm <= 0.1:  # no thermal test => meanless for snow detection (0~1)
         # fprintf('Clear pixel NOT exist in this scene (del prct =
-        # #.2f)\n',ptm)
+        # #.2f)',ptm)
         Cloud[idplcd] = 1  # all cld
 
         # mask out the non-contiguous pixels
@@ -1260,14 +1260,14 @@ def plcloud_warm(toa_bt, cldprob=22.5, num_Lst=None,
         t_templ = -1
         t_temph = -1
     else:
-        # fprintf('Clear pixel EXIST in this scene (del prct = #.2f)\n',ptm)
+        # fprintf('Clear pixel EXIST in this scene (del prct = #.2f)',ptm)
         # (temperature test )
         if lndptm >= 0.1:
             F_temp = Temp[idlnd]  # get land temperature
-            #       fprintf('Land temperature\n')
+            #       fprintf('Land temperature')
         else:
             F_temp = Temp[idclr]  # get del temperature
-            #        fprintf('Clear temperature\n')
+            #        fprintf('Clear temperature')
 
         # Get cloud prob over water
         # temperature test (over water)
@@ -1348,7 +1348,7 @@ def plcloud_warm(toa_bt, cldprob=22.5, num_Lst=None,
         logger.debug('t_templ: %s', t_templ)
         sys.stdout.flush()
 
-        # fprintf('pcloud probability threshold (land) = .2f#\n',clr_max)
+        # fprintf('pcloud probability threshold (land) = .2f#',clr_max)
         # cloud over land : (idplcd & (final_prob > clr_max) & (WT == 0))
         # thin cloud over water : (idplcd & (wfinal_prob > wclr_max) & (WT == 1))
         # high prob cloud (land) : (final_prob > 99.0) & (WT == 0)
@@ -1437,9 +1437,9 @@ def plcloud_warm(toa_bt, cldprob=22.5, num_Lst=None,
     if ptm > 0.1:
         cloud_temp = Temp[cloud_mask]
 
-        logger.debug("Snow Percent: %f\n" %
+        logger.debug("Snow Percent: %f" %
                      ((float(Snow[mask].sum()) / float(mask.sum())) * 100.0))
-        logger.debug("Cloud Mean: %f C\n" % (numpy.mean(cloud_temp) / 100.0))
+        logger.debug("Cloud Mean: %f C" % (numpy.mean(cloud_temp) / 100.0))
 
         if numpy.sum(cloud_mask) > 0:
             cloud_stddev = numpy.std(
@@ -1448,15 +1448,15 @@ def plcloud_warm(toa_bt, cldprob=22.5, num_Lst=None,
             pct_lower = numpy.percentile(cloud_temp, 83.5) / 100.0
             pct_upper_max = numpy.percentile(cloud_temp, 98.75) / 100.0
 
-            logger.debug("Standard Deviation: %f C\n" % cloud_stddev)
-            logger.debug("97.5 percentile: %f C\n" % pct_upper)
-            logger.debug("83.5 percentile: %f C\n" % pct_lower)
-            logger.debug("98.75 percentile: %f C\n" % pct_upper_max)
+            logger.debug("Standard Deviation: %f C" % cloud_stddev)
+            logger.debug("97.5 percentile: %f C" % pct_upper)
+            logger.debug("83.5 percentile: %f C" % pct_lower)
+            logger.debug("98.75 percentile: %f C" % pct_upper_max)
 
-    logger.info("Final Cloud Layer Percent: %f\n" %
+    logger.info("Final Cloud Layer Percent: %f" %
                 ((float(Cloud[cloud_mask].sum()) / float(mask.sum())) * 100.0))
 
-    logger.info("Completed processing FMASK cloud cover...\n")
+    logger.info("Completed processing FMASK cloud cover...")
 
     # We'll modify the return argument for the Python implementation
     # (geoT,prj) are added to the list
@@ -1568,17 +1568,17 @@ def fcssm(Sun_zen, Sun_azi, ptm, Temp, t_templ, t_temph, Water, Snow, plcim, pls
 
     # cloud covers more than 90# of the scene
     # => no match => rest are definite shadows
-    # fprintf('Cloud and cloud shadow matching ...\n')
+    # fprintf('Cloud and cloud shadow matching ...')
 
     if ptm <= 0.1 or revised_ptm >= 0.90:
-        #     fprintf('No Shadow Match due to too much cloud (>90 percent)\n')
+        #     fprintf('No Shadow Match due to too much cloud (>90 percent)')
         cloud_cal[cloud_test == True] = 1
         shadow_cal[cloud_test == False] = 1
         similar_num = -1
         #   height_num=-1
 
     else:
-        #     fprintf('Shadow Match in processing\n')
+        #     fprintf('Shadow Match in processing')
 
         # define constants
         Tsimilar = 0.30
@@ -1592,9 +1592,9 @@ def fcssm(Sun_zen, Sun_azi, ptm, Temp, t_templ, t_temph, Water, Snow, plcim, pls
         rate_elapse = 6.5  # degrees/km
         rate_dlapse = 9.8  # degrees/km
 
-        #     fprintf('Set cloud similarity = #.3f\n',Tsimilar)
-        #     fprintf('Set matching buffer = #.3f\n',Tbuffer)
-        #     fprintf('Shadow match for cloud object >= #d pixels\n',num_cldoj)
+        #     fprintf('Set cloud similarity = #.3f',Tsimilar)
+        #     fprintf('Set matching buffer = #.3f',Tbuffer)
+        #     fprintf('Shadow match for cloud object >= #d pixels',num_cldoj)
 
         i_step = 2 * sub_size * math.tan(sun_ele_rad)  # move 2 pixel at a time
 
@@ -1618,7 +1618,7 @@ def fcssm(Sun_zen, Sun_azi, ptm, Temp, t_templ, t_temph, Water, Snow, plcim, pls
             x_ur), float(y_ur), float(x_ll), float(y_ll), float(x_lr), float(y_lr))
 
         # Segmentate each cloud
-        #     fprintf('Cloud segmentation & matching\n')
+        #     fprintf('Cloud segmentation & matching')
         (segm_cloud_init, segm_cloud_init_features) = scipy.ndimage.measurements.label(
             cloud_test, scipy.ndimage.morphology.generate_binary_structure(2, 2))
 
@@ -1797,7 +1797,7 @@ def fcssm(Sun_zen, Sun_azi, ptm, Temp, t_templ, t_temph, Water, Snow, plcim, pls
         #    cldpix=3 # number of pixels to be dilated for cloud
         #    sdpix=3 # number of pixels to be dilated for shadow
         # fprintf('Dilate #d pixels for cloud & #d pixels for shadow
-        # objects\n',cldpix,sdpix)
+        # objects',cldpix,sdpix)
 
         # NOTE: An alternative for a structuring element would be to use the iterations parameter of binary_dilation()
         # The number of iterations is equal to the number of dilations if using
@@ -1896,9 +1896,12 @@ def mat_truecloud(x, y, h, A, B, C, omiga_par, omiga_per):
     return (x_new, y_new)
 
 
-def run_FMask(mtl, outdir, cldprob=22.5, cldpix=3, sdpix=3, snpix=3):
+def run_FMask(mtl, outdir=None, cldprob=22.5, cldpix=3, sdpix=3, snpix=3):
     # Check that the MTL file exists
     assert os.path.exists(mtl), "Invalid filename: %s" % mtl
+
+    if outdir is None:
+        outdir = os.path.dirname(mtl)
 
     if not os.path.exists(outdir):
         os.mkdir(outdir)
