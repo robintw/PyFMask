@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 # coding=utf-8
-# A near literal port of the FMask matlab code to python using numpy/scipy and itk.
-# - As a result of the literal port, original comments should still be intact - as is the original code structure.
+# A near literal port of the FMask matlab code to python using numpy/scipy and
+# itk. - As a result of the literal port, original comments should still be
+# intact - as is the original code structure.
 
 # Transcription History
 # 1.6.3 transcription Mitchell Wheeler
@@ -11,7 +12,6 @@
 #     + better handling for imagery of different resolutions
 
 import sys
-import re
 import gc
 import math
 import logging
@@ -52,13 +52,12 @@ def match_file(dir_path, pattern):
 
 
 def im_info(filename):
-    """
-    A function to retrieve the geotransform and projection details using GDAL.
-    The original MATLAB code handles it differently, we'll just implement something unique here
-    and let GDAL automatically handle the read/write of the projection info.
-    Less messy than the MATLAB code which assumes that everything is in UTM.
-    Some products may come as Lat/Lon geographic projections.
-    """
+    """ A function to retrieve the geotransform and projection details using
+    GDAL. The original MATLAB code handles it differently, we'll just implement
+    something unique here and let GDAL automatically handle the read/write of
+    the projection info. Less messy than the MATLAB code which assumes that
+    everything is in UTM. Some products may come as Lat/Lon geographic
+    projections. """
 
     img = gdal.Open(filename)
     geoT = img.GetGeoTransform()
@@ -83,9 +82,9 @@ def imread(filename, resample=False, samples=None, lines=None):
 
 
 def imfill_skimage(img):
-    """
-    Replicates the imfill function available within MATLAB.
-    Based on the example provided in http://scikit-image.org/docs/dev/auto_examples/plot_holes_and_peaks.html#example-plot-holes-and-peaks-py.
+    """ Replicates the imfill function available within MATLAB. Based on the
+    example provided in
+    http://scikit-image.org/docs/dev/auto_examples/plot_holes_and_peaks.html#example-plot-holes-and-peaks-py.
 
     """
 
@@ -455,18 +454,26 @@ def lndhdrread(filename):
     # The new version returns Lmax,Lmin,Qcalmax,Qcalmin,Refmax,Refmin,ijdim_ref,ijdim_thm,reso_ref,reso_thm,ul,zen,azi,zc,Lnum,doy
     # return
     # (Lmax,Lmin,Qcalmax,Qcalmin,ijdim_ref,ijdim_thm,reso_ref,reso_thm,ul,zen,azi,zc,Lnum,doy)
-    return (Lmax, Lmin, Qcalmax, Qcalmin, Refmax, Refmin, ijdim_ref, ijdim_thm, reso_ref, reso_thm, ul, zen, azi, zc, Lnum, doy)
+    return (Lmax, Lmin, Qcalmax, Qcalmin,
+            Refmax, Refmin,
+            ijdim_ref, ijdim_thm,
+            reso_ref, reso_thm,
+            ul,
+            zen, azi,
+            zc,
+            Lnum,
+            doy)
 
 
 def nd2toarbt(filename, images=None):
-    """
-    Load metadata from MTL file & calculate reflectance values for scene bands.
+    """ Load metadata from MTL file & calculate reflectance values for scene
+    bands.
 
-    :param filename:
-        A string containing the file path of the MTL file for the landsat scene.
+    :param filename: A string containing the file path of the MTL file for the
+    landsat scene.
 
-    :param images:
-        A numpy.ndarray of pre-calculated reflectance values for each landsat band, to be used instead of calculating our own.
+    :param images: A numpy.ndarray of pre-calculated reflectance values for each
+    landsat band, to be used instead of calculating our own.
     """
     Lmax, Lmin, Qcalmax, Qcalmin, Refmax, Refmin, ijdim_ref, ijdim_thm, reso_ref, reso_thm, ul, zen, azi, zc, Lnum, doy = lndhdrread(
         filename)
@@ -663,7 +670,9 @@ def nd2toarbt(filename, images=None):
         # We'll modify the return argument for the Python implementation (geoT,prj) are added to the list
 # return
 # [im_B6,images,ijdim_ref,ul,zen,azi,zc,B1Satu,B2Satu,B3Satu,resolu,geoT,prj]
-        return [im_B6, images, sz, ul_coord, zen, azi, zc, B1Satu, B2Satu, B3Satu, resolu, geoT, prj]
+        return [im_B6, images, sz, ul_coord, zen, azi, zc,
+                B1Satu, B2Satu, B3Satu, resolu, geoT, prj]
+
     elif (Lnum == 8):
         n_B10 = match_file(base, '*B10.*')
         # Check that the thermal band resolution matches the reflectance bands.
@@ -772,7 +781,8 @@ def nd2toarbt(filename, images=None):
         # We'll modify the return argument for the Python implementation (geoT,prj) are added to the list
 # return
 # [im_B10,images,ijdim_ref,ul,zen,azi,zc,B1Satu,B2Satu,B3Satu,resolu,geoT,prj]
-        return [im_B10, images, sz, ul_coord, zen, azi, zc, B1Satu, B2Satu, B3Satu, resolu, geoT, prj]
+        return [im_B10, images, sz, ul_coord, zen, azi, zc,
+                B1Satu, B2Satu, B3Satu, resolu, geoT, prj]
 
     else:
         raise Exception('This sensor is not Landsat 4, 5, 7, or 8!')
@@ -799,10 +809,13 @@ def plcloud(filename, cldprob=22.5, num_Lst=None, images=None,
         A string containing the file path of the output log produced by FMask.
 
     :param shadow_prob:
-        A flag indicating if the shadow probability should be calculated or not (required by FMask cloud shadow). Type Bool.
+        A flag indicating if the shadow probability should be
+        calculated or not (required by FMask cloud shadow). Type Bool.
 
     :return:
-        Tuple (zen,azi,ptm, temperature band (celcius*100),t_templ,t_temph, water mask, snow mask, cloud mask , shadow probability,dim,ul,resolu,zc).
+        Tuple (zen,azi,ptm, temperature band (celcius*100),t_templ,t_temph,
+               water mask, snow mask, cloud mask, shadow probability,dim,
+               ul,resolu,zc).
     """
     Temp, data, dim, ul, zen, azi, zc, satu_B1, satu_B2, satu_B3, resolu, geoT, prj = nd2toarbt(
         filename, images)
@@ -1118,7 +1131,8 @@ def plcloud(filename, cldprob=22.5, num_Lst=None, images=None,
 
     # We'll modify the return argument for the Python implementation
     # (geoT,prj) are added to the list
-    return (zen, azi, ptm, Temp, t_templ, t_temph, WT, Snow, Cloud, Shadow, dim, ul, resolu, zc, geoT, prj)
+    return (zen, azi, ptm, Temp, t_templ, t_temph,
+            WT, Snow, Cloud, Shadow, dim, ul, resolu, zc, geoT, prj)
 
 
 def plcloud_warm(toa_bt, cldprob=22.5, num_Lst=None,
@@ -1142,10 +1156,13 @@ def plcloud_warm(toa_bt, cldprob=22.5, num_Lst=None,
         A string containing the file path of the output log produced by FMask.
 
     :param shadow_prob:
-        A flag indicating if the shadow probability should be calculated or not (required by FMask cloud shadow). Type Bool.
+        A flag indicating if the shadow probability should be
+        calculated or not (required by FMask cloud shadow). Type Bool.
 
     :return:
-        Tuple (zen,azi,ptm, temperature band (celcius*100),t_templ,t_temph, water mask, snow mask, cloud mask , shadow probability,dim,ul,resolu,zc).
+        Tuple (zen,azi,ptm, temperature band (celcius*100),t_templ,t_temph,
+               water mask, snow mask, cloud mask , shadow probability,dim,
+               ul,resolu,zc).
     """
     Temp, data, \
         dim, ul, zen, azi, zc, \
@@ -1463,17 +1480,11 @@ def plcloud_warm(toa_bt, cldprob=22.5, num_Lst=None,
     return (zen, azi, ptm, Temp, t_templ, t_temph, WT, Snow, Cloud, Shadow, dim, ul, resolu, zc, geoT, prj)
 
 
-def fcssm(Sun_zen, Sun_azi, ptm, Temp, t_templ, t_temph, Water, Snow, plcim, plsim, ijDim, resolu, ZC, cldpix, sdpix, snpix):
-    """
-    NEW:
-    fcssm(dir_im,Sun_zen,Sun_azi,ptm,Temp,...
-        t_templ,t_temph,Water,Snow,plcim,plsim,ijDim,jiUL,resolu,ZC,cldpix,sdpix,snpix)
-    ORIGINAL:
-    fcssm_1_6sav(dir_im,Sun_zen,Sun_azi,ptm,Temp,...
-        t_templ,t_temph,Water,Snow,plcim,plsim,ijDim,jiUL,resolu,ZC,cldpix,sdpix)
-    """
-    """
-    Calculates the cloud shadow mask for a scene, given solar geometry information, the thermal band for the scene & a cloud mask.
+def fcssm(Sun_zen, Sun_azi, ptm, Temp, t_templ, t_temph, Water, Snow, plcim,
+plsim, ijDim, resolu, ZC, cldpix, sdpix, snpix):
+""" Calculates the cloud shadow
+mask for a scene, given solar geometry information, the thermal band for the
+scene & a cloud mask.
 
     :param Sun_zen:
         Solar Elevation angle (degrees).
@@ -1633,13 +1644,16 @@ def fcssm(Sun_zen, Sun_azi, ptm, Temp, t_templ, t_temph, Water, Snow, plcim, pls
                 segm_cloud_init)
         num = numpy.max(segm_cloud)
 
-        # NOTE: properties is deprecated as of version 0.9 and all properties are computed. Currently using version 0.8.2. If this version or a later versionproves too slow, I'll implement another method. JS 16/12/2013
-        # The properties is taking approx 3min, I can cut that down to just a
-        # few seconds using another method, but will leave for the time being.
+        # NOTE: properties is deprecated as of version 0.9 and all properties
+        # are computed. Currently using version 0.8.2. If this version or a
+        # later versionproves too slow, I'll implement another method. JS
+        # 16/12/2013 The properties is taking approx 3min, I can cut that down
+        # to just a few seconds using another method, but will leave for the
+        # time being.
         if skimage_version[1] > 9:
             s = measure.regionprops(segm_cloud)
         else:
-            s = measure.regionprops(segm_cloud,  properties=[
+            s = measure.regionprops(segm_cloud, properties=[
                                     'Area', 'Coordinates'])
 
         # Use iteration to get the optimal move distance
@@ -1657,8 +1671,8 @@ def fcssm(Sun_zen, Sun_azi, ptm, Temp, t_templ, t_temph, Water, Snow, plcim, pls
 
             num_pixels = cld_area
 
-            # Have re-formatted the arrays to be Python style memory ordering (2,num_pixels) JS 16/12/2013
-            # moving cloud xys
+            # Have re-formatted the arrays to be Python style memory ordering
+            # (2,num_pixels) JS 16/12/2013 moving cloud xys
             XY_type = numpy.zeros((2, num_pixels), dtype='uint32')
 
             # record the max threshold moving cloud xys
@@ -1917,9 +1931,9 @@ def run_FMask(mtl, outdir=None, cldprob=22.5, cldpix=3, sdpix=3, snpix=3):
     fmask_fname = os.path.join(outdir, 'fmask')
 
     # Open the MTL file.
-    # The original MATLAB code opens the file twice to retrieve the Landsat number.
-    # It would be better to open it once and restructure the function
-    # parameters.
+    # The original MATLAB code opens the file twice to
+    # retrieve the Landsat number. It would be better to open it once and
+    # restructure the function parameters.
     data = {}
     fl = open(mtl, 'r')
     file_lines = fl.readlines()
