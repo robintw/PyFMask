@@ -1482,9 +1482,9 @@ def plcloud_warm(toa_bt, cldprob=22.5, num_Lst=None,
 
 def fcssm(Sun_zen, Sun_azi, ptm, Temp, t_templ, t_temph, Water, Snow, plcim,
 plsim, ijDim, resolu, ZC, cldpix, sdpix, snpix):
-""" Calculates the cloud shadow
-mask for a scene, given solar geometry information, the thermal band for the
-scene & a cloud mask.
+    """ Calculates the cloud shadow
+    mask for a scene, given solar geometry information, the thermal band for the
+    scene & a cloud mask.
 
     :param Sun_zen:
         Solar Elevation angle (degrees).
@@ -1982,8 +1982,7 @@ def run_FMask(mtl, outdir=None, cldprob=22.5, cldpix=3, sdpix=3, snpix=3):
     c.GetRasterBand(1).WriteArray(cs_final)
     c = None
 
-
-    final_mask = ((cs_final == 2) | (cs_final == 4)).astype('uint8')
+    final_mask = ((cs_final != 0)).astype('uint8')
     c = gdal.GetDriverByName('ENVI').Create(final_mask_fname, final_mask.shape[
         1], final_mask.shape[0], 1, gdal.GDT_Byte)
     c.SetGeoTransform(geoT)
