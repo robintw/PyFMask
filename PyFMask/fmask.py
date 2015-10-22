@@ -1992,8 +1992,7 @@ def run_FMask(mtl, outdir=None, cldprob=22.5, cldpix=3, sdpix=3, snpix=3):
     # TODO: Save water/snow masks?
 
 
-if __name__ == '__main__':
-
+def main():
     parser = argparse.ArgumentParser(
         description='Computes the Fmask algorithm. Cloud, cloud shadow and Fmask combined (contains thecloud, cloud shadow and snow masks in a single array) are output to disk.')
     parser.add_argument('--mtl', required=True,
@@ -2020,3 +2019,7 @@ if __name__ == '__main__':
     logger.setLevel(logging.INFO)
     logging.basicConfig()
     run_FMask(mtl, outdir, cldprob, cldpix, sdpix, snpix)
+
+
+if __name__ == '__main__':
+    main()
