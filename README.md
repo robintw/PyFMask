@@ -1,4 +1,7 @@
 # PyFMask
+**There are major issues in the code, and it should not be used in its current state. I suggest you investigate https://bitbucket.org/chchrsc/python-fmask instead**
+
+
 Python version of the FMask Landsat Cloud Masking code
 
 ## Requirements
